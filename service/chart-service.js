@@ -1,12 +1,12 @@
 const { ChartJSNodeCanvas } = require('chartjs-node-canvas');
-const width = 1000;
-const height = 600;
+const width = 700;
+const height = 400;
 const backgroundColour = '#ffffff';
 const chartCallback = (ChartJS) => {
   console.log("chart built");
 };
 
-const chartJSNodeCanvas = new ChartJSNodeCanvas({ width, height, backgroundColour, chartCallback });
+const chartJSNodeCanvas = new ChartJSNodeCanvas({ type: 'svg', width, height, backgroundColour, chartCallback });
 
 const data = {
   labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
@@ -36,21 +36,25 @@ const data = {
 }
 
 const createImage = async () => {
-  const configuration = {
-    type: 'bar',
-    data: data,
-    options: {
-      scales: {
-        y: {
-          beginAtZero: true,
+  try {
+    const configuration = {
+      type: 'bar',
+      data: data,
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          }
         }
       }
     }
-  }
-
-  const image = await chartJSNodeCanvas.renderToBuffer(configuration);
   
-  return image;
+    const image = await chartJSNodeCanvas.renderToBufferSync(configuration);
+    
+    return image;
+  } catch (err) {
+    console.log("error", err);
+  }
 }
 
 module.exports = {

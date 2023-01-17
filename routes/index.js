@@ -16,16 +16,22 @@ router.get('/invoice', (req, res, next) => {
 });
 
 router.get('/chart-image', async (req, res, next) => {
-  const chartImage = await chartService.createImage()
-
-  console.log("image", chartImage);
-  res.writeHead(200, {
-    'Content-Type': 'image/jpeg',
-    'Content-Disposition': 'attachment;filename=chart.jpg'
-  })
-  res.write(chartImage);
-  res.end()
-  next()
+  console.log("test test test")
+  try {
+    console.log("imageaaaa");
+    const chartImage = await chartService.createImage()
+  
+    res.writeHead(200, {
+      'Content-Type': 'image/svg+xml',
+      'Content-Disposition': 'attachment;filename=chart.svg'
+    })
+    res.write(chartImage);
+    res.end()
+    next()
+  } catch (err) {
+    throw (err)
+    console.log('err', err)
+  }
 })
 
 module.exports = router;
